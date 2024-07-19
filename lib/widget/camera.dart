@@ -3,7 +3,9 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class SelectPicture extends StatefulWidget {
-  const SelectPicture({super.key});
+  const SelectPicture({required this.onselectedimgae, super.key});
+
+  final void Function(File imgae) onselectedimgae;
   State<SelectPicture> createState() {
     return _SelectPictureState();
   }
@@ -22,6 +24,7 @@ class _SelectPictureState extends State<SelectPicture> {
     setState(() {
       _selectedimage = File(_pickedimage.path);
     });
+    widget.onselectedimgae(_selectedimage!);
   }
 
   @override

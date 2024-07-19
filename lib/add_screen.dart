@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:map/providers/list_provider.dart';
 import 'package:map/widget/camera.dart';
+import 'dart:io';
 
 class Add_Screen extends ConsumerStatefulWidget {
   const Add_Screen({super.key});
@@ -11,6 +12,7 @@ class Add_Screen extends ConsumerStatefulWidget {
 }
 
 class Add_ScreenState extends ConsumerState<Add_Screen> {
+  File? _selectedimage;
   final textContriller = TextEditingController();
   @override
   void dispose() {
@@ -24,7 +26,7 @@ class Add_ScreenState extends ConsumerState<Add_Screen> {
     if (enterdtext.isEmpty) {
       return;
     }
-    ref.read(addplacenotifier.notifier).additem(enterdtext);
+    ref.read(addplacenotifier.notifier).additem(enterdtext, _selectedimage!);
     Navigator.of(context).pop();
   }
 
@@ -52,7 +54,11 @@ class Add_ScreenState extends ConsumerState<Add_Screen> {
                 const SizedBox(
                   height: 12,
                 ),
-                const SelectPicture(),
+                SelectPicture(
+                  onselectedimgae: (imgae) {
+                    _selectedimage = imgae;
+                  },
+                ),
                 const SizedBox(
                   height: 12,
                 ),
