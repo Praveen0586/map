@@ -51,6 +51,10 @@ class _HomeState extends ConsumerState<Home> {
                 builder: (builder) => OnTapScreen(providerlist[index].title)));
           },
           child: ListTile(
+            leading: CircleAvatar(
+              radius: 26,
+              backgroundImage: FileImage(providerlist[index].imgae),
+            ),
             enabled: true,
             title: Text(
               providerlist[index].title,
@@ -85,7 +89,7 @@ class _HomeState extends ConsumerState<Home> {
             style: theme.textTheme.titleLarge,
           ),
         ),
-        body: content);
+        body: Padding(padding: const EdgeInsets.only(top: 10), child: content));
   }
 }
   // void _additem() async {
