@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:map/providers/list_provider.dart';
+import 'package:map/widget/camera.dart';
 
 class Add_Screen extends ConsumerStatefulWidget {
   const Add_Screen({super.key});
@@ -48,6 +49,10 @@ class Add_ScreenState extends ConsumerState<Add_Screen> {
                     label: Text('Place'),
                   ),
                 ),
+                const SizedBox(
+                  height: 12,
+                ),
+                const SelectPicture(),
                 const SizedBox(
                   height: 12,
                 ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:map/add_screen.dart';
-import 'package:map/data/locationdatas.dart';
 import 'package:map/providers/list_provider.dart';
 import 'package:map/screen/on_tap_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +9,7 @@ var theme = ThemeData().copyWith(
   colorScheme: ColorScheme.fromSeed(
     brightness: Brightness.dark,
     seedColor: Color.fromARGB(255, 68, 33, 223),
-    surface: Color.fromARGB(255, 16, 8, 63),
+    surface: Color.fromARGB(255, 34, 31, 54),
     //background: Color.fromARGB(255, 209, 98, 25),
   ),
   textTheme: GoogleFonts.ubuntuCondensedTextTheme().copyWith(
