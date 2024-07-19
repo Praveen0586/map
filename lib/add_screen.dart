@@ -1,69 +1,107 @@
 import 'package:flutter/material.dart';
-import 'package:map/data/locationdatas.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:map/providers/list_provider.dart';
 
-class Add_Screen extends StatefulWidget {
+class Add_Screen extends ConsumerStatefulWidget {
   const Add_Screen({super.key});
 
   @override
-  State<Add_Screen> createState() => _Add_ScreenState();
+  ConsumerState<Add_Screen> createState() => Add_ScreenState();
 }
 
-class _Add_ScreenState extends State<Add_Screen> {
-  void _savefuction() {
-    if (_formkey.currentState!.validate()) {
-      _formkey.currentState!.save();
-      Navigator.of(context).pop(
-        Locationdatas(typedtext),
-      );
-    }
+class Add_ScreenState extends ConsumerState<Add_Screen> {
+  final textContriller = TextEditingController();
+  @override
+  void dispose() {
+    textContriller.dispose();
+    super.dispose();
   }
 
-  var _formkey = GlobalKey<FormState>();
-  String typedtext = '';
+  void _saveit() {
+    final enterdtext = textContriller.text;
+
+    if (enterdtext.isEmpty) {
+      return;
+    }
+    ref.read(addplacenotifier.notifier).additem(enterdtext);
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Add New Place',
-          style: Theme.of(context).textTheme.titleLarge,
+        appBar: AppBar(
+          title: Text(
+            'Add New Place',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
         ),
-      ),
-      body: 
-      Form(
-          key: _formkey,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: TextFormField(
-                  initialValue: '',
+        body: SingleChildScrollView(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              children: [
+                TextField(
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.surface),
+                  controller: textContriller,
                   decoration: const InputDecoration(
-                    label: Text('Location'),
+                    label: Text('Place'),
                   ),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Enter a valid value';
-                    }
-                    return null;
-                  },
-                  onSaved: (newValue) {
-                    setState(() {
-                      typedtext = newValue!;
-                    });
-                  },
                 ),
-              ),
-              Center(
-                child: ElevatedButton(
-                  onPressed: _savefuction,
-                  child: Text('Add',
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.onBackground)),
+                const SizedBox(
+                  height: 12,
                 ),
-              )
-            ],
-          )),
-    );
+                Center(
+                  child: ElevatedButton(
+                      onPressed: _saveit, child: const Text('Add')),
+                )
+              ],
+            )));
   }
 }
+
+ // String typedtext = '';
+  // var _formkey = GlobalKey<FormState>();
+ // void _savefuction() {
+  //   if (_formkey.currentState!.validate()) {
+  //     _formkey.currentState!.save();
+  //     Navigator.of(context).pop(
+  //       Locationdatas(typedtext),
+  //     );
+  //   }
+  // }
+
+ // Form(
+      //     key: _formkey,
+      //     child: Column(
+      //       children: [
+      //         Padding(
+      //           padding: const EdgeInsets.all(12),
+      //           child: TextFormField(
+      //             initialValue: '',
+      //             decoration: const InputDecoration(
+      //               label: Text('Location'),
+      //             ),
+      //             validator: (value) {
+      //               if (value == null || value.trim().isEmpty) {
+      //                 return 'Enter a valid value';
+      //               }
+      //               return null;
+      //             },
+      //             onSaved: (newValue) {
+      //               setState(() {
+      //                 typedtext = newValue!;
+      //               });
+      //             },
+      //           ),
+      //         ),
+      //         Center(
+      //           child: ElevatedButton(
+      //             onPressed: _savefuction,
+      //             child: Text('Add',
+      //                 style: TextStyle(
+      //                     color: Theme.of(context).colorScheme.onBackground)),
+      //           ),
+      //         )
+      //       ],
+      //     )),

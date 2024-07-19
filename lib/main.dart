@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:map/add_screen.dart';
 import 'package:map/data/locationdatas.dart';
+import 'package:map/providers/list_provider.dart';
 import 'package:map/screen/on_tap_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -30,60 +31,68 @@ void main() {
   ));
 }
 
-class Home extends StatefulWidget {
+class Home extends ConsumerStatefulWidget {
   const Home({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  ConsumerState<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
-  void _additem() async {
-    final valueget = await Navigator.of(context).push<dynamic>(
-        MaterialPageRoute(builder: (builder) => const Add_Screen()));
-    setState(() {
-      locationdatas.add(valueget);
-    });
-  }
-
+class _HomeState extends ConsumerState<Home> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-              onPressed: _additem,
-              icon: const Icon(
-                Icons.add,
-                color: Colors.white,
-              )),
-          const SizedBox(width: 8),
-        ],
-        title: Text(
-          'Great Places ',
-          style: theme.textTheme.titleLarge,
-        ),
-      ),
-      body: ListView.builder(
-        itemCount: locationdatas.length,
-        itemBuilder: (context, index) {
-          return InkWell(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (builder) =>
-                      OnTapScreen(locationdatas[index].title)));
-            },
-            child: ListTile(
-              enabled: true,
-              title: Text(
-                locationdatas[index].title,
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-              ),
+    final providerlist = ref.watch(addplacenotifier);
+
+    Widget content = ListView.builder(
+      itemCount: providerlist.length,
+      itemBuilder: (context, index) {
+        return InkWell(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (builder) => OnTapScreen(providerlist[index].title)));
+          },
+          child: ListTile(
+            enabled: true,
+            title: Text(
+              providerlist[index].title,
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
+    if (providerlist.isEmpty) {
+      content = const Center(
+        child: Text('No Places Added Yet'),
+      );
+    }
+
+    return Scaffold(
+        appBar: AppBar(
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (builder) => const Add_Screen()));
+                },
+                icon: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                )),
+            const SizedBox(width: 8),
+          ],
+          title: Text(
+            'Great Places ',
+            style: theme.textTheme.titleLarge,
+          ),
+        ),
+        body: content);
   }
 }
+  // void _additem() async {
+  //   final valueget = await Navigator.of(context).push<dynamic>(
+  //       MaterialPageRoute(builder: (builder) => const Add_Screen()));
+  //   setState(() {
+  //     locationdatas.add(valueget);
+  //   });
+  // }
