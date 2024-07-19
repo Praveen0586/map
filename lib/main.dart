@@ -3,12 +3,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:map/add_screen.dart';
 import 'package:map/data/locationdatas.dart';
 import 'package:map/screen/on_tap_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 var theme = ThemeData().copyWith(
   colorScheme: ColorScheme.fromSeed(
-      brightness: Brightness.dark,
-      seedColor: const Color.fromARGB(255, 51, 24, 172),
-      background: Color.fromARGB(255, 12, 48, 65)),
+    brightness: Brightness.dark,
+    seedColor: Color.fromARGB(255, 68, 33, 223),
+    surface: Color.fromARGB(255, 16, 8, 63),
+    //background: Color.fromARGB(255, 209, 98, 25),
+  ),
   textTheme: GoogleFonts.ubuntuCondensedTextTheme().copyWith(
     titleLarge: GoogleFonts.ubuntuCondensed(fontWeight: FontWeight.bold),
     titleMedium: GoogleFonts.ubuntuCondensed(fontWeight: FontWeight.bold),
@@ -17,14 +20,14 @@ var theme = ThemeData().copyWith(
 );
 
 void main() {
-  runApp(
-    MaterialApp(
+  runApp(ProviderScope(
+    child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'great places',
         theme: theme,
         // darkTheme: ThemeData.dark(),
         home: const Home()),
-  );
+  ));
 }
 
 class Home extends StatefulWidget {
