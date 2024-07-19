@@ -48,7 +48,7 @@ class _HomeState extends ConsumerState<Home> {
         return InkWell(
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (builder) => OnTapScreen(providerlist[index].title)));
+                builder: (builder) => OnTapScreen(providerlist[index])));
           },
           child: ListTile(
             leading: CircleAvatar(
