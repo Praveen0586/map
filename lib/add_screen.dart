@@ -4,6 +4,8 @@ import 'package:map/providers/list_provider.dart';
 import 'package:map/widget/camera.dart';
 import 'dart:io';
 
+import 'package:map/widget/location_selector.dart';
+
 class Add_Screen extends ConsumerStatefulWidget {
   const Add_Screen({super.key});
 
@@ -59,6 +61,10 @@ class Add_ScreenState extends ConsumerState<Add_Screen> {
                     _selectedimage = imgae;
                   },
                 ),
+                const SizedBox(
+                  height: 12,
+                ),
+                const LocationSelector(),
                 const SizedBox(
                   height: 12,
                 ),
