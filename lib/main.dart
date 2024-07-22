@@ -5,11 +5,10 @@ import 'package:map/providers/list_provider.dart';
 import 'package:map/screen/on_tap_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 var theme = ThemeData().copyWith(
   colorScheme: ColorScheme.fromSeed(
     brightness: Brightness.dark,
-    seedColor:const  Color.fromARGB(255, 68, 33, 223),
+    seedColor: const Color.fromARGB(255, 68, 33, 223),
     surface: const Color.fromARGB(255, 34, 31, 54),
     //background: Color.fromARGB(255, 209, 98, 25),
   ),
@@ -27,7 +26,7 @@ void main() {
         title: 'great places',
         theme: theme,
         // darkTheme: ThemeData.dark(),
-        home:const   Home()),
+        home: const Home()),
   ));
 }
 
@@ -60,6 +59,13 @@ class _HomeState extends ConsumerState<Home> {
             title: Text(
               providerlist[index].title,
               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+            ),
+            subtitle: Text(
+              'Latitude : ${providerlist[index].place.latitude}, Longitude :${providerlist[index].place.longitude}',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall!
+                  .copyWith(color: Theme.of(context).colorScheme.onSecondary),
             ),
           ),
         );

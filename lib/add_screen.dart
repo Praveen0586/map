@@ -28,8 +28,8 @@ class Add_ScreenState extends ConsumerState<Add_Screen> {
     final enterdtext = textContriller.text;
 
     if (enterdtext.isEmpty ||
-        _selectedimage == null ||
-        _selectedlocation == null) {
+        _selectedimage == null ||_selectedlocation==null
+       ) {
       return;
     }
     ref

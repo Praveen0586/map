@@ -48,45 +48,51 @@ class _LocationSelectorState extends State<LocationSelector> {
     if (lat == null || long == null) {
       return;
     }
-
-    final url = Uri.parse(
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&key=AIzaSyA0dU6bvJ0LAEbJSS4aWajev5DDZmeiyK0');
-    final res = await http.get(url);
-    final responseData = json.decode(res.body);
-    print(responseData);
-    var humanreadableAddreass = responseData['results'][0]['formatted_address'];
-
-    setState(() {
-      _pickedlocation = LocationDetails(
-          latitude: lat, longitude: long, addreass: humanreadableAddreass);
-      _isgettinglocation = false;
-    });
-
-    widget.onSelectedLocation(_pickedlocation!);
-  }
-
-  String get google_map_image_link_getter {
-    final lat = _pickedlocation!.latitude;
-    final long = _pickedlocation!.longitude;
-
-    if (_pickedlocation == null) {
-      return '';
+    if (lat != null || long != null) {
+      setState(() {
+        _pickedlocation = LocationDetails(latitude: lat, longitude: long);
+        _isgettinglocation = false;
+      });
+      widget.onSelectedLocation(_pickedlocation!);
     }
-    return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$long&zoom=16&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:S%7C$lat,$long&key=AIzaSyA0dU6bvJ0LAEbJSS4aWajev5DDZmeiyK0';
-  }
+// the codes below are used to get the maplocation view from google with the help of API - PAID
+    //   final url = Uri.parse(
+    //       'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&key=AIzaSyA0dU6bvJ0LAEbJSS4aWajev5DDZmeiyK0');
+    //   final res = await http.get(url);
+    //   final responseData = json.decode(res.body);
+    //   print(responseData);
+    //   var humanreadableAddreass = responseData['results'][0]['formatted_address'];
 
-  Widget ourcontent = const Text('No Location Choosen yet');
+    //   setState(() {
+    //     _pickedlocation = LocationDetails(
+    //         latitude: lat, longitude: long, addreass: humanreadableAddreass);
+    //     _isgettinglocation = false;
+    //   });
+
+    //   widget.onSelectedLocation(_pickedlocation!);
+    // }
+
+    // String get google_map_image_link_getter {
+    //   final lat = _pickedlocation!.latitude;
+    //   final long = _pickedlocation!.longitude;
+
+    //   if (_pickedlocation == null) {
+    //     return '';
+    //   }
+    //   return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$long&zoom=16&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:S%7C$lat,$long&key=AIzaSyA0dU6bvJ0LAEbJSS4aWajev5DDZmeiyK0';
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (_pickedlocation != null) {
-      ourcontent = Image.network(
-        google_map_image_link_getter,
-        fit: BoxFit.cover,
-        width: double.infinity,
-        height: double.infinity,
-      );
-    }
+    // if (_pickedlocation != null) {
+    //   ourcontent = Image.network(
+    //     google_map_image_link_getter,
+    //     fit: BoxFit.cover,
+    //     width: double.infinity,
+    //     height: double.infinity,
+    //   );
+    // }
+    Widget ourcontent = const Text('No Location Choosen yet');
     if (_isgettinglocation) {
       setState(() {
         ourcontent = const CircularProgressIndicator();

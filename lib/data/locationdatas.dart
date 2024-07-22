@@ -8,19 +8,15 @@ final uuid = const Uuid().v4;
 var locationdatas = [];
 
 class LocationDetails {
-  LocationDetails(
-      {required this.latitude,
-      required this.longitude,
-      required this.addreass});
+  LocationDetails({required this.latitude, required this.longitude});
   double latitude;
   double longitude;
-  String addreass;
 }
 
 class Locationdatas {
-  Locationdatas(this.title, this.imgae,this.place) : id = uuid.toString();
+  Locationdatas(this.title, this.imgae, this.place) : id = uuid.toString();
   String title;
   String id;
   File imgae;
- LocationDetails place;
+  LocationDetails place;
 }
