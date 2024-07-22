@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:location/location.dart';
 import 'package:map/data/locationdatas.dart';
-import '';
+import 'package:http/http.dart' as http;
+
 class LocationSelector extends StatefulWidget {
   const LocationSelector({super.key});
 
@@ -46,6 +49,17 @@ class _LocationSelectorState extends State<LocationSelector> {
     });
     print(_locationData.latitude);
     print(_locationData.longitude);
+    final lat = _locationData.latitude;
+    final long = _locationData.longitude;
+
+    final url = Uri.parse(
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&AIzaSyAMQW2y0wAIRrvFJaDYP6tDExq01RiVx3c');
+    final res = await http.get(url);
+    final responseData = json.decode(res.body);
+
+    final humanreadableAddreass =
+        responseData['results'][0]['formatted_address'];
+    print(humanreadableAddreass);
   }
 
   Widget ourcontent = const Text('No Location Choosen yet');

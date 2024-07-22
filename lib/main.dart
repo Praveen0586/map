@@ -5,6 +5,7 @@ import 'package:map/providers/list_provider.dart';
 import 'package:map/screen/on_tap_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+
 var theme = ThemeData().copyWith(
   colorScheme: ColorScheme.fromSeed(
     brightness: Brightness.dark,
@@ -26,7 +27,7 @@ void main() {
         title: 'great places',
         theme: theme,
         // darkTheme: ThemeData.dark(),
-        home: const Home()),
+        home:const   Home()),
   ));
 }
 
