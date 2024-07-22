@@ -1,8 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:location/location.dart';
 import 'package:map/data/locationdatas.dart';
 import 'package:http/http.dart' as http;
@@ -15,57 +13,82 @@ class LocationSelector extends StatefulWidget {
 }
 
 class _LocationSelectorState extends State<LocationSelector> {
-  Location? _pickedlocation;
+  LocationDetails? _pickedlocation;
   bool _isgettinglocation = false;
 
   void _getloaction() async {
     Location location = Location();
 
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-    LocationData _locationData;
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
 
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
         return;
       }
     }
 
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
         return;
       }
     }
     setState(() {
       _isgettinglocation = true;
     });
-    _locationData = await location.getLocation();
-    setState(() {
-      _isgettinglocation = false;
-    });
-    print(_locationData.latitude);
-    print(_locationData.longitude);
-    final lat = _locationData.latitude;
-    final long = _locationData.longitude;
+    locationData = await location.getLocation();
+
+    final lat = locationData.latitude;
+    final long = locationData.longitude;
+    if (lat == null || long == null) {
+      return;
+    }
+    print(lat);
+    print(long);
 
     final url = Uri.parse(
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&AIzaSyAMQW2y0wAIRrvFJaDYP6tDExq01RiVx3c');
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&key=AIzaSyA0dU6bvJ0LAEbJSS4aWajev5DDZmeiyK0');
     final res = await http.get(url);
     final responseData = json.decode(res.body);
+    print(responseData);
+    var humanreadableAddreass = responseData['results'][0]['formatted_address'];
 
-    final humanreadableAddreass =
-        responseData['results'][0]['formatted_address'];
-    print(humanreadableAddreass);
+    setState(() {
+      _pickedlocation = LocationDetails(
+          latitude: lat, longitude: long, addreass: humanreadableAddreass);
+      _isgettinglocation = false;
+    });
+  }
+
+  String get google_map_image_link_getter {
+    print(4444444444444444);
+    final lat = _pickedlocation!.latitude;
+    final long = _pickedlocation!.longitude;
+
+    if (_pickedlocation == null) {
+      print(555555555555555);
+      return '';
+    }
+    return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$long&zoom=16&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:S%7C$lat,$long&key=AIzaSyA0dU6bvJ0LAEbJSS4aWajev5DDZmeiyK0';
   }
 
   Widget ourcontent = const Text('No Location Choosen yet');
 
   @override
   Widget build(BuildContext context) {
+    if (_pickedlocation != null) {
+      ourcontent = Image.network(
+        google_map_image_link_getter,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+      );
+    }
     if (_isgettinglocation) {
       setState(() {
         ourcontent = const CircularProgressIndicator();
@@ -89,13 +112,13 @@ class _LocationSelectorState extends State<LocationSelector> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ElevatedButton.icon(
-                icon: Icon(Icons.location_on_outlined),
+                icon: const Icon(Icons.location_on_outlined),
                 onPressed: _getloaction,
-                label: Text(' Current Location ')),
+                label: const Text(' Current Location ')),
             ElevatedButton.icon(
-                icon: Icon(Icons.map_sharp),
+                icon: const Icon(Icons.map_sharp),
                 onPressed: () {},
-                label: Text(
+                label: const Text(
                   'Choose on Map',
                 ))
           ],
