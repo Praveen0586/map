@@ -48,8 +48,7 @@ class _LocationSelectorState extends State<LocationSelector> {
     if (lat == null || long == null) {
       return;
     }
-    print(lat);
-    print(long);
+   
 
     final url = Uri.parse(
         'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&key=AIzaSyA0dU6bvJ0LAEbJSS4aWajev5DDZmeiyK0');
@@ -66,12 +65,12 @@ class _LocationSelectorState extends State<LocationSelector> {
   }
 
   String get google_map_image_link_getter {
-    print(4444444444444444);
+ 
     final lat = _pickedlocation!.latitude;
     final long = _pickedlocation!.longitude;
 
     if (_pickedlocation == null) {
-      print(555555555555555);
+  
       return '';
     }
     return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$long&zoom=16&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:S%7C$lat,$long&key=AIzaSyA0dU6bvJ0LAEbJSS4aWajev5DDZmeiyK0';
