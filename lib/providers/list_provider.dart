@@ -6,8 +6,8 @@ import 'package:map/data/locationdatas.dart';
 class AddStateNotifier extends StateNotifier<List<Locationdatas>> {
   AddStateNotifier() : super(const []);
 
-  void additem(String title, File image) {
-    var newitem = Locationdatas(title, image);
+  void additem(String title, File image, LocationDetails location) {
+    var newitem = Locationdatas(title, image, location);
     state = [newitem, ...state];
   }
 }

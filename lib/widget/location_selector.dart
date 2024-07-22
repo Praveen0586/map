@@ -6,8 +6,8 @@ import 'package:map/data/locationdatas.dart';
 import 'package:http/http.dart' as http;
 
 class LocationSelector extends StatefulWidget {
-  const LocationSelector({super.key});
-
+  const LocationSelector({super.key, required this.onSelectedLocation});
+  final Function(LocationDetails location) onSelectedLocation;
   @override
   State<LocationSelector> createState() => _LocationSelectorState();
 }
@@ -48,7 +48,6 @@ class _LocationSelectorState extends State<LocationSelector> {
     if (lat == null || long == null) {
       return;
     }
-   
 
     final url = Uri.parse(
         'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$long&key=AIzaSyA0dU6bvJ0LAEbJSS4aWajev5DDZmeiyK0');
@@ -62,15 +61,15 @@ class _LocationSelectorState extends State<LocationSelector> {
           latitude: lat, longitude: long, addreass: humanreadableAddreass);
       _isgettinglocation = false;
     });
+
+    widget.onSelectedLocation(_pickedlocation!);
   }
 
   String get google_map_image_link_getter {
- 
     final lat = _pickedlocation!.latitude;
     final long = _pickedlocation!.longitude;
 
     if (_pickedlocation == null) {
-  
       return '';
     }
     return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$long&zoom=16&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:S%7C$lat,$long&key=AIzaSyA0dU6bvJ0LAEbJSS4aWajev5DDZmeiyK0';

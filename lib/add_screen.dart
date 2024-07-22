@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:map/data/locationdatas.dart';
 import 'package:map/providers/list_provider.dart';
 import 'package:map/widget/camera.dart';
 import 'dart:io';
@@ -14,6 +15,7 @@ class Add_Screen extends ConsumerStatefulWidget {
 }
 
 class Add_ScreenState extends ConsumerState<Add_Screen> {
+  LocationDetails? _selectedlocation;
   File? _selectedimage;
   final textContriller = TextEditingController();
   @override
@@ -28,7 +30,9 @@ class Add_ScreenState extends ConsumerState<Add_Screen> {
     if (enterdtext.isEmpty) {
       return;
     }
-    ref.read(addplacenotifier.notifier).additem(enterdtext, _selectedimage!);
+    ref
+        .read(addplacenotifier.notifier)
+        .additem(enterdtext, _selectedimage!, _selectedlocation!);
     Navigator.of(context).pop();
   }
 
@@ -64,7 +68,11 @@ class Add_ScreenState extends ConsumerState<Add_Screen> {
                 const SizedBox(
                   height: 12,
                 ),
-                const LocationSelector(),
+                LocationSelector(
+                  onSelectedLocation: (location) {
+                    _selectedlocation = location;
+                  },
+                ),
                 const SizedBox(
                   height: 12,
                 ),

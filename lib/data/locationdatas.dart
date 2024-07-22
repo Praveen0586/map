@@ -18,9 +18,9 @@ class LocationDetails {
 }
 
 class Locationdatas {
-  Locationdatas(this.title, this.imgae,) : id = uuid.toString();
+  Locationdatas(this.title, this.imgae,this.place) : id = uuid.toString();
   String title;
   String id;
   File imgae;
- // LocationDetails place;
+ LocationDetails place;
 }
