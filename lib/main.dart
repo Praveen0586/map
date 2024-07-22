@@ -8,8 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 var theme = ThemeData().copyWith(
   colorScheme: ColorScheme.fromSeed(
     brightness: Brightness.dark,
-    seedColor: Color.fromARGB(255, 68, 33, 223),
-    surface: Color.fromARGB(255, 34, 31, 54),
+    seedColor:const  Color.fromARGB(255, 68, 33, 223),
+    surface: const Color.fromARGB(255, 34, 31, 54),
     //background: Color.fromARGB(255, 209, 98, 25),
   ),
   textTheme: GoogleFonts.ubuntuCondensedTextTheme().copyWith(
