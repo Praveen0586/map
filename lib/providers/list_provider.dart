@@ -23,11 +23,26 @@ Future<Database> _getDataBase() async {
 class AddStateNotifier extends StateNotifier<List<Locationdatas>> {
   AddStateNotifier() : super(const []);
 
+//getting extracting data from sql
+  void _loaddata() async {
+    final database = await _getDataBase();
+    final data = await database.query('user_place');
+    final places = data.map((row) {
+      return Locationdatas(
+          row['title'] as String,
+          File(row['image'] as String),
+          LocationDetails(
+              latitude: row['lat'] as double, longitude: row['long'] as double),
+          row['id'] as String);
+    }).toList();
+    state = places;
+  }
+
   void additem(String title, File image, LocationDetails location) async {
     final filename = path.basename(image.path);
     final appDir = await syspath.getApplicationDocumentsDirectory();
     final copiedpath = await image.copy('${appDir.path}/$filename');
-    var newitem = Locationdatas(title, copiedpath, location,null);
+    var newitem = Locationdatas(title, copiedpath, location, null);
     state = [newitem, ...state];
 
     final database = await _getDataBase();
@@ -38,22 +53,8 @@ class AddStateNotifier extends StateNotifier<List<Locationdatas>> {
       'long': newitem.place.longitude,
       'image': newitem.imgae.path
     });
-
-    final data = await database.query('user_place');
-    final places = data.map((row) {
-      return Locationdatas(
-          row['title'] as String,
-          File(row['image'] as String),
-          LocationDetails(
-              latitude: row['lat'] as double, longitude: row['long'] as double),
-          row['id'] as String);
-    }).toList();
-
-    state = places;
   }
 }
-
-//getting extracting data from sql
 
 var addplacenotifier =
     StateNotifierProvider<AddStateNotifier, List<Locationdatas>>(
