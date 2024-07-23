@@ -38,6 +38,15 @@ class Home extends ConsumerStatefulWidget {
 }
 
 class _HomeState extends ConsumerState<Home> {
+  late Future<void> _loadfuture;
+
+  @override
+  void initState() {
+
+    super.initState();
+    _loadfuture = ref.read(addplacenotifier.notifier).loaddata();
+  }
+
   @override
   Widget build(BuildContext context) {
     final providerlist = ref.watch(addplacenotifier);
@@ -96,7 +105,18 @@ class _HomeState extends ConsumerState<Home> {
             style: theme.textTheme.titleLarge,
           ),
         ),
-        body: Padding(padding: const EdgeInsets.only(top: 10), child: content));
+        body: Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: FutureBuilder(
+              future: _loadfuture,
+              builder: (context, snapshot) {
+                return snapshot.connectionState == ConnectionState.waiting
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : content;
+              },
+            )));
   }
 }
   // void _additem() async {
