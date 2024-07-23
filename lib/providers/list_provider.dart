@@ -27,7 +27,7 @@ class AddStateNotifier extends StateNotifier<List<Locationdatas>> {
     final filename = path.basename(image.path);
     final appDir = await syspath.getApplicationDocumentsDirectory();
     final copiedpath = await image.copy('${appDir.path}/$filename');
-    var newitem = Locationdatas(title, copiedpath, location);
+    var newitem = Locationdatas(title, copiedpath, location,null);
     state = [newitem, ...state];
 
     final database = await _getDataBase();
