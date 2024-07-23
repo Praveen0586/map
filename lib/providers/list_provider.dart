@@ -7,6 +7,19 @@ import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
 
+Future<Database> _getDataBase() async {
+  final dbpath = await sql.getDatabasesPath();
+  final database = await sql.openDatabase(
+    path.join(dbpath, 'user_files.db'),
+    onCreate: (db, version) {
+      return db.execute(
+          'CREATE TABLE user_place ( id TEXT PRIMARY KEY,title TEXT,lat REAL,long REAL,image TEXT )');
+    },
+    version: 1,
+  );
+  return database;
+}
+
 class AddStateNotifier extends StateNotifier<List<Locationdatas>> {
   AddStateNotifier() : super(const []);
 
@@ -17,15 +30,7 @@ class AddStateNotifier extends StateNotifier<List<Locationdatas>> {
     var newitem = Locationdatas(title, copiedpath, location);
     state = [newitem, ...state];
 
-    final dbpath = await sql.getDatabasesPath();
-    final database = await sql.openDatabase(
-      path.join(dbpath, 'user_files.db'),
-      onCreate: (db, version) {
-        return db.execute(
-            'CREATE TABLE user_place ( id TEXT PRIMARY KEY,title TEXT,lat REAL,long REAL,image TEXT )');
-      },
-      version: 1,
-    );
+    final database = await _getDataBase();
     database.insert('user_place', {
       'id': newitem.id,
       'title': newitem.title,
@@ -33,8 +38,22 @@ class AddStateNotifier extends StateNotifier<List<Locationdatas>> {
       'long': newitem.place.longitude,
       'image': newitem.imgae.path
     });
+
+    final data = await database.query('user_place');
+    final places = data.map((row) {
+      return Locationdatas(
+          row['title'] as String,
+          File(row['image'] as String),
+          LocationDetails(
+              latitude: row['lat'] as double, longitude: row['long'] as double),
+          row['id'] as String);
+    }).toList();
+
+    state = places;
   }
 }
+
+//getting extracting data from sql
 
 var addplacenotifier =
     StateNotifierProvider<AddStateNotifier, List<Locationdatas>>(
